@@ -1,0 +1,3 @@
+/home/todd/gw2-mapcompletion/build/CMakeFiles/MapCompletionTracker.dir
+/home/todd/gw2-mapcompletion/build/CMakeFiles/edit_cache.dir
+/home/todd/gw2-mapcompletion/build/CMakeFiles/rebuild_cache.dir
