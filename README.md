@@ -1,7 +1,18 @@
+AI Notice
+
+This addon includes AI-generated content and/or AI-assisted code.
+
+AI may have been used during development for tasks such as code generation, suggestions, documentation, or content creation. While efforts are made to review and validate all AI-generated output, it may not always be fully accurate, optimal, or free of unintended behavior.
+
+Users should be aware that:
+
+    AI-generated components may contain errors or inconsistencies or may be unstable,
+    behavior may change as the addon evolves or is updated,
+    the developer remains responsible for ensuring compliance with the game's Terms of Service.
+
+.
+
 Nexus addon for Guild Wars 2 that adds a manual per-character checklist for Map Completion.
-
-
-Build using AI. If that's a problem for you just don't use it and don't recomment it.
 
 
 API Key is optional, gets character names. - set in Nexus addon settings if you desire to use that function.
