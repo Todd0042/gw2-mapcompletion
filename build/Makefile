@@ -153,6 +153,30 @@ src/AddonMain.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MapCompletionTracker.dir/build.make CMakeFiles/MapCompletionTracker.dir/src/AddonMain.cpp.s
 .PHONY : src/AddonMain.cpp.s
 
+src/EventDebug.obj: src/EventDebug.cpp.obj
+.PHONY : src/EventDebug.obj
+
+# target to build an object file
+src/EventDebug.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MapCompletionTracker.dir/build.make CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj
+.PHONY : src/EventDebug.cpp.obj
+
+src/EventDebug.i: src/EventDebug.cpp.i
+.PHONY : src/EventDebug.i
+
+# target to preprocess a source file
+src/EventDebug.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MapCompletionTracker.dir/build.make CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.i
+.PHONY : src/EventDebug.cpp.i
+
+src/EventDebug.s: src/EventDebug.cpp.s
+.PHONY : src/EventDebug.s
+
+# target to generate assembly for a file
+src/EventDebug.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MapCompletionTracker.dir/build.make CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.s
+.PHONY : src/EventDebug.cpp.s
+
 src/Shared.obj: src/Shared.cpp.obj
 .PHONY : src/Shared.obj
 
@@ -285,6 +309,9 @@ help:
 	@echo "... src/AddonMain.obj"
 	@echo "... src/AddonMain.i"
 	@echo "... src/AddonMain.s"
+	@echo "... src/EventDebug.obj"
+	@echo "... src/EventDebug.i"
+	@echo "... src/EventDebug.s"
 	@echo "... src/Shared.obj"
 	@echo "... src/Shared.i"
 	@echo "... src/Shared.s"

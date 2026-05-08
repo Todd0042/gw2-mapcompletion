@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/todd/gw2-mapcompletion/src/AddonMain.cpp" "CMakeFiles/MapCompletionTracker.dir/src/AddonMain.cpp.obj" "gcc" "CMakeFiles/MapCompletionTracker.dir/src/AddonMain.cpp.obj.d"
+  "/home/todd/gw2-mapcompletion/src/EventDebug.cpp" "CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj" "gcc" "CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj.d"
   "/home/todd/gw2-mapcompletion/src/Shared.cpp" "CMakeFiles/MapCompletionTracker.dir/src/Shared.cpp.obj" "gcc" "CMakeFiles/MapCompletionTracker.dir/src/Shared.cpp.obj.d"
   "/home/todd/gw2-mapcompletion/third_party/imgui/imgui.cpp" "CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj" "gcc" "CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj.d"
   "/home/todd/gw2-mapcompletion/third_party/imgui/imgui_draw.cpp" "CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj" "gcc" "CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj.d"

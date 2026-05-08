@@ -7,12 +7,35 @@
 #include "MapData.h"
 #include "UI.h"
 #include "map_png.h"
+#include "Nexus.h"
 
 #include <imgui.h>
 #include <windows.h>
 #include <string>
-#include <algorithm>
-#include <cctype>
+
+AddonAPI_t* g_api = nullptr;
+
+// Needed by EventDebug.cpp so it can write debug_mapinfo.txt
+std::string GetAddonDirectory()
+{
+    const char* dir = APIDefs->Paths_GetAddonDirectory("MapCompletionTracker");
+    if (!dir)
+        return "";
+    return std::string(dir) + "\\";
+}
+
+
+extern "C" void RegisterEventDebug();
+extern "C" void UnregisterEventDebug();
+extern "C" const char* GetCurrentCharacterName()
+{
+    return g_currentCharName;
+}
+
+
+// From EventDebug.cpp
+void EventDebug_OnMumbleIdentityUpdated(int mapId);
+
 
 // ---------------------------------------------------------------------------
 //  Forward declarations
@@ -28,11 +51,11 @@ void OnMumbleIdentityUpdated (void* aEventArgs);
 // ---------------------------------------------------------------------------
 //  Globals
 // ---------------------------------------------------------------------------
-static AddonDefinition_t s_addonDef{};
-static CompletionTracker s_tracker;
-static UI                s_ui;
-static HMODULE           s_hSelf       = nullptr;
-static bool              s_initialized = false;
+static AddonDefinition_t  s_addonDef{};
+static CompletionTracker  s_tracker;
+static UI                 s_ui;
+static HMODULE            s_hSelf           = nullptr;
+static bool               s_initialized     = false;
 
 // ---------------------------------------------------------------------------
 //  DllMain
@@ -72,7 +95,10 @@ extern "C" __declspec(dllexport) AddonDefinition_t* GetAddonDef()
 void AddonLoad(AddonAPI_t* aApi)
 {
     APIDefs = aApi;
+    g_api   = aApi;
     APIDefs->Log(LOGL_INFO, "MapCompletionTracker", "AddonLoad: start");
+
+    RegisterEventDebug();
 
     (void)GetAllMaps();
     (void)GetMapsById();
@@ -119,6 +145,8 @@ void AddonLoad(AddonAPI_t* aApi)
 // ---------------------------------------------------------------------------
 void AddonUnload()
 {
+    UnregisterEventDebug();
+
     APIDefs->Events_Unsubscribe("EV_MUMBLE_IDENTITY_UPDATED", OnMumbleIdentityUpdated);
     APIDefs->GUI_Deregister(OnRender);
     APIDefs->GUI_Deregister(OnRenderOptions);
@@ -175,6 +203,10 @@ void OnMumbleIdentityUpdated(void* aEventArgs)
     snprintf(infoLog, sizeof(infoLog),
              "MapCompletionTracker: active character -> '%s'.", name.c_str());
     APIDefs->Log(LOGL_INFO, "MapCompletionTracker", infoLog);
+
+    // Trigger debug module on map load
+    EventDebug_OnMumbleIdentityUpdated(identity->MapID);
+
 }
 
 // ---------------------------------------------------------------------------
@@ -201,14 +233,6 @@ void OnRender()
         // If we already have a character name from an earlier event, apply it
         if (g_currentCharName[0] != '\0')
             s_tracker.SetActiveCharacter(g_currentCharName);
-
-        // Auto-fetch character list if we have a saved API key
-        std::string savedKey = s_tracker.GetSavedApiKey();
-        if (!savedKey.empty())
-        {
-            APIDefs->Log(LOGL_INFO, "MapCompletionTracker", "Auto-fetching character list from API.");
-            s_ui.TriggerApiFetch(savedKey);
-        }
 
         APIDefs->Log(LOGL_INFO, "MapCompletionTracker", "Initialised successfully.");
     }

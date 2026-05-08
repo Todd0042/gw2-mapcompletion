@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CompletionTracker.h"
-#include "GW2API.h"
 #include "MapData.h"
 #include "Shared.h"
 #include <imgui/imgui.h>
@@ -27,23 +26,10 @@ public:
     void Init(CompletionTracker* tracker)
     {
         m_tracker = tracker;
-
-        std::string saved = m_tracker->GetSavedApiKey();
-        if (!saved.empty())
-        {
-            strncpy(m_apiKeyBuf, saved.c_str(), sizeof(m_apiKeyBuf) - 1);
-            m_apiKeyBuf[sizeof(m_apiKeyBuf) - 1] = '\0';
-        }
     }
 
     void ToggleVisible() { m_visible = !m_visible; }
     bool IsVisible()     { return m_visible; }
-
-    void TriggerApiFetch(const std::string& apiKey)
-    {
-        m_api.Fetch(apiKey);
-        m_apiStatusMsg = "";
-    }
 
     // -----------------------------------------------------------------
     //  Main window
@@ -72,9 +58,11 @@ public:
         const auto& allMaps = GetAllMaps();
         const auto& tabs    = GetTabOrder();
 
-        // Compute overall progress
+        // Compute overall progress — count only maps actually in the tracked list
         size_t totalAll = allMaps.size();
-        size_t doneAll  = m_tracker->CompletedCountFor(viewChar);
+        size_t doneAll  = 0;
+        for (const auto& m : allMaps)
+            if (m_tracker->IsCompleteFor(viewChar, m.id)) doneAll++;
         float  progressAll = totalAll > 0 ? (float)doneAll / (float)totalAll : 0.0f;
 
         ImGui::SetNextWindowSize(ImVec2(560, 720), ImGuiCond_FirstUseEver);
@@ -301,65 +289,9 @@ public:
     {
         ImGui::TextUnformatted("Map Completion Tracker Options");
         ImGui::Separator();
-
         ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextUnformatted("GW2 API Key");
-        ImGui::TextDisabled("Used to fetch your character list. Requires 'characters' permission.");
-        ImGui::TextDisabled("Get a key at: account.arena.net/applications");
-        ImGui::Spacing();
-
-        ImGuiInputTextFlags keyFlags = m_showApiKey
-            ? ImGuiInputTextFlags_None
-            : ImGuiInputTextFlags_Password;
-        ImGui::SetNextItemWidth(340);
-        ImGui::InputText("##apikey", m_apiKeyBuf, sizeof(m_apiKeyBuf), keyFlags);
-        ImGui::SameLine();
-        ImGui::Checkbox("Show", &m_showApiKey);
-        ImGui::Spacing();
-
-        bool fetching = m_api.GetState() == GW2API::State::Fetching;
-        if (fetching) ImGui_BeginDisabled();
-        if (ImGui::Button(fetching ? "Fetching..." : "Fetch Characters"))
-        {
-            std::string key = m_apiKeyBuf;
-            if (!key.empty())
-            {
-                m_tracker->SaveApiKey(key);
-                m_api.Fetch(key);
-                m_apiStatusMsg = "";
-            }
-            else
-                m_apiStatusMsg = "Please enter an API key first.";
-        }
-        if (fetching) ImGui_EndDisabled();
-
-        if (m_api.GetState() == GW2API::State::Done)
-        {
-            auto names = m_api.GetCharacterNames();
-            m_tracker->RegisterCharacters(names);
-            m_apiStatusMsg = "Loaded " + std::to_string(names.size()) + " character(s).";
-            m_api.Reset();
-        }
-        else if (m_api.GetState() == GW2API::State::Error)
-        {
-            m_apiStatusMsg = m_api.GetErrorMessage();
-            m_api.Reset();
-        }
-
-        if (!m_apiStatusMsg.empty())
-        {
-            ImGui::SameLine();
-            bool isError = m_apiStatusMsg.find("error") != std::string::npos
-                        || m_apiStatusMsg.find("failed") != std::string::npos
-                        || m_apiStatusMsg.find("Failed") != std::string::npos
-                        || m_apiStatusMsg.find("Check")  != std::string::npos;
-            if (isError)
-                ImGui::TextColored(ImVec4(1,0.3f,0.3f,1), "%s", m_apiStatusMsg.c_str());
-            else
-                ImGui::TextColored(ImVec4(0.3f,0.9f,0.3f,1), "%s", m_apiStatusMsg.c_str());
-        }
-
+        ImGui::TextDisabled("Characters are tracked automatically via MumbleLink.");
+        ImGui::TextDisabled("Log in to each character at least once to add it to the list.");
         ImGui::Spacing();
         ImGui::TextDisabled("Keybind: set via Nexus keybind settings (KB_MAPCOMPLETION_TOGGLE)");
     }
@@ -412,9 +344,4 @@ private:
     int                m_filterMode         = 0;
     std::string        m_viewedCharacter;
     bool               m_viewedCharacterSet = false;
-
-    GW2API             m_api;
-    char               m_apiKeyBuf[73]      = {};
-    bool               m_showApiKey         = false;
-    std::string        m_apiStatusMsg;
 };

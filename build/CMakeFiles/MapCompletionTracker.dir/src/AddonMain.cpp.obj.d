@@ -15,7 +15,6 @@ CMakeFiles/MapCompletionTracker.dir/src/AddonMain.cpp.obj: \
  /usr/x86_64-w64-mingw32/include/_mingw_mac.h \
  /usr/x86_64-w64-mingw32/include/_mingw_secapi.h \
  /usr/x86_64-w64-mingw32/include/vadefs.h \
- /usr/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
  /usr/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stddef.h \
  /usr/x86_64-w64-mingw32/include/stddef.h \
  /usr/x86_64-w64-mingw32/include/windows.h \
@@ -311,6 +310,8 @@ CMakeFiles/MapCompletionTracker.dir/src/AddonMain.cpp.obj: \
  /usr/x86_64-w64-mingw32/include/c++/15.2.0/cwchar \
  /usr/x86_64-w64-mingw32/include/wchar.h \
  /usr/x86_64-w64-mingw32/include/corecrt_stdio_config.h \
+ /usr/x86_64-w64-mingw32/include/corecrt_wconio.h \
+ /usr/x86_64-w64-mingw32/include/sec_api/wconio_s.h \
  /usr/x86_64-w64-mingw32/include/_mingw_off_t.h \
  /usr/x86_64-w64-mingw32/include/_mingw_stat64.h \
  /usr/x86_64-w64-mingw32/include/swprintf.inl \
@@ -549,17 +550,6 @@ CMakeFiles/MapCompletionTracker.dir/src/AddonMain.cpp.obj: \
  /usr/x86_64-w64-mingw32/include/c++/15.2.0/any \
  /home/todd/gw2-mapcompletion/src/MapData.h \
  /home/todd/gw2-mapcompletion/src/UI.h \
- /home/todd/gw2-mapcompletion/src/GW2API.h \
- /usr/x86_64-w64-mingw32/include/winhttp.h \
- /usr/x86_64-w64-mingw32/include/c++/15.2.0/thread \
- /usr/x86_64-w64-mingw32/include/c++/15.2.0/stop_token \
- /usr/x86_64-w64-mingw32/include/c++/15.2.0/atomic \
- /usr/x86_64-w64-mingw32/include/c++/15.2.0/bits/std_thread.h \
- /usr/x86_64-w64-mingw32/include/c++/15.2.0/semaphore \
- /usr/x86_64-w64-mingw32/include/c++/15.2.0/bits/semaphore_base.h \
- /usr/x86_64-w64-mingw32/include/c++/15.2.0/bits/atomic_timed_wait.h \
- /usr/x86_64-w64-mingw32/include/c++/15.2.0/bits/this_thread_sleep.h \
- /usr/x86_64-w64-mingw32/include/semaphore.h \
  /home/todd/gw2-mapcompletion/third_party/imgui/imgui.h \
  /home/todd/gw2-mapcompletion/third_party/imgui/imconfig.h \
  /usr/lib/gcc/x86_64-w64-mingw32/15.2.0/include/float.h \

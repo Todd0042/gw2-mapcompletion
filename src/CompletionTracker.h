@@ -80,6 +80,21 @@ public:
     bool IsComplete(uint32_t mapId) const { return IsCompleteFor(m_activeCharacter, mapId); }
     size_t CompletedCount() const         { return CompletedCountFor(m_activeCharacter); }
 
+    // Bulk-mark a set of map IDs as complete for a character (single Save call).
+    // Only maps already in the tracked set gain new entries; nothing is removed,
+    // so any maps the user manually checked beyond what the API returns are kept.
+    void SyncCompletedMaps(const std::string& character,
+                           const std::unordered_set<uint32_t>& mapIds)
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        std::string key = character.empty() ? UNKNOWN_CHARACTER : character;
+        bool changed = false;
+        for (uint32_t id : mapIds)
+            if (m_data[key].insert(id).second)
+                changed = true;
+        if (changed) Save();
+    }
+
     void MarkCompleteFor(const std::string& character, uint32_t mapId)
     {
         std::lock_guard<std::mutex> lock(m_mutex);
@@ -110,20 +125,6 @@ public:
         auto it = m_data.find(key);
         if (it == m_data.end()) return 0;
         return it->second.size();
-    }
-
-    // API key persistence
-    void SaveApiKey(const std::string& key)
-    {
-        std::lock_guard<std::mutex> lock(m_mutex);
-        m_savedApiKey = key;
-        Save();
-    }
-
-    std::string GetSavedApiKey() const
-    {
-        std::lock_guard<std::mutex> lock(m_mutex);
-        return m_savedApiKey;
     }
 
 private:
@@ -160,9 +161,6 @@ private:
                     m_data[UNKNOWN_CHARACTER].insert(id.get<uint32_t>());
             }
 
-            // Load API key
-            if (j.contains("api_key") && j["api_key"].is_string())
-                m_savedApiKey = j["api_key"].get<std::string>();
         }
         catch (...) {}
     }
@@ -173,12 +171,10 @@ private:
         {
             json j;
 
-            // Save full known character list
             j["known_characters"] = json::array();
             for (const auto& name : m_knownCharacters)
                 j["known_characters"].push_back(name);
 
-            // Save completion data
             j["characters"] = json::object();
             for (const auto& [charName, ids] : m_data)
             {
@@ -187,10 +183,8 @@ private:
                     j["characters"][charName].push_back(id);
             }
 
-            if (!m_savedApiKey.empty())
-                j["api_key"] = m_savedApiKey;
-
             std::ofstream f(m_savePath);
+            if (!f.is_open()) return;
             f << j.dump(2);
         }
         catch (...) {}
@@ -201,5 +195,4 @@ private:
     std::unordered_set<std::string>                                m_knownCharacters;
     std::string                                                    m_activeCharacter = UNKNOWN_CHARACTER;
     std::string                                                    m_savePath;
-    std::string                                                    m_savedApiKey;
 };

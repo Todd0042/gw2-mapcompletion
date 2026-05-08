@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/MapCompletionTracker.dir/src/AddonMain.cpp.obj"
   "CMakeFiles/MapCompletionTracker.dir/src/AddonMain.cpp.obj.d"
+  "CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj"
+  "CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj.d"
   "CMakeFiles/MapCompletionTracker.dir/src/Shared.cpp.obj"
   "CMakeFiles/MapCompletionTracker.dir/src/Shared.cpp.obj.d"
   "CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj"

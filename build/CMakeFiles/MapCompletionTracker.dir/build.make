@@ -102,11 +102,26 @@ CMakeFiles/MapCompletionTracker.dir/src/Shared.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapCompletionTracker.dir/src/Shared.cpp.s"
 	/usr/bin/x86_64-w64-mingw32-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/todd/gw2-mapcompletion/src/Shared.cpp -o CMakeFiles/MapCompletionTracker.dir/src/Shared.cpp.s
 
+CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj: CMakeFiles/MapCompletionTracker.dir/flags.make
+CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj: CMakeFiles/MapCompletionTracker.dir/includes_CXX.rsp
+CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj: /home/todd/gw2-mapcompletion/src/EventDebug.cpp
+CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj: CMakeFiles/MapCompletionTracker.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/todd/gw2-mapcompletion/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj"
+	/usr/bin/x86_64-w64-mingw32-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj -MF CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj.d -o CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj -c /home/todd/gw2-mapcompletion/src/EventDebug.cpp
+
+CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.i"
+	/usr/bin/x86_64-w64-mingw32-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/todd/gw2-mapcompletion/src/EventDebug.cpp > CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.i
+
+CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.s"
+	/usr/bin/x86_64-w64-mingw32-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/todd/gw2-mapcompletion/src/EventDebug.cpp -o CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.s
+
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj: CMakeFiles/MapCompletionTracker.dir/flags.make
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj: CMakeFiles/MapCompletionTracker.dir/includes_CXX.rsp
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj: /home/todd/gw2-mapcompletion/third_party/imgui/imgui.cpp
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj: CMakeFiles/MapCompletionTracker.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/todd/gw2-mapcompletion/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/todd/gw2-mapcompletion/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj"
 	/usr/bin/x86_64-w64-mingw32-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj -MF CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj.d -o CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj -c /home/todd/gw2-mapcompletion/third_party/imgui/imgui.cpp
 
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.i: cmake_force
@@ -121,7 +136,7 @@ CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj: CMakeF
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj: CMakeFiles/MapCompletionTracker.dir/includes_CXX.rsp
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj: /home/todd/gw2-mapcompletion/third_party/imgui/imgui_draw.cpp
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj: CMakeFiles/MapCompletionTracker.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/todd/gw2-mapcompletion/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/todd/gw2-mapcompletion/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj"
 	/usr/bin/x86_64-w64-mingw32-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj -MF CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj.d -o CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj -c /home/todd/gw2-mapcompletion/third_party/imgui/imgui_draw.cpp
 
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.i: cmake_force
@@ -136,7 +151,7 @@ CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.obj: CMak
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.obj: CMakeFiles/MapCompletionTracker.dir/includes_CXX.rsp
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.obj: /home/todd/gw2-mapcompletion/third_party/imgui/imgui_tables.cpp
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.obj: CMakeFiles/MapCompletionTracker.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/todd/gw2-mapcompletion/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/todd/gw2-mapcompletion/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.obj"
 	/usr/bin/x86_64-w64-mingw32-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.obj -MF CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.obj.d -o CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.obj -c /home/todd/gw2-mapcompletion/third_party/imgui/imgui_tables.cpp
 
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.i: cmake_force
@@ -151,7 +166,7 @@ CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_widgets.cpp.obj: CMa
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_widgets.cpp.obj: CMakeFiles/MapCompletionTracker.dir/includes_CXX.rsp
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_widgets.cpp.obj: /home/todd/gw2-mapcompletion/third_party/imgui/imgui_widgets.cpp
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_widgets.cpp.obj: CMakeFiles/MapCompletionTracker.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/todd/gw2-mapcompletion/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_widgets.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/todd/gw2-mapcompletion/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_widgets.cpp.obj"
 	/usr/bin/x86_64-w64-mingw32-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_widgets.cpp.obj -MF CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_widgets.cpp.obj.d -o CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_widgets.cpp.obj -c /home/todd/gw2-mapcompletion/third_party/imgui/imgui_widgets.cpp
 
 CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_widgets.cpp.i: cmake_force
@@ -166,6 +181,7 @@ CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_widgets.cpp.s: cmake
 MapCompletionTracker_OBJECTS = \
 "CMakeFiles/MapCompletionTracker.dir/src/AddonMain.cpp.obj" \
 "CMakeFiles/MapCompletionTracker.dir/src/Shared.cpp.obj" \
+"CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj" \
 "CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj" \
 "CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj" \
 "CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.obj" \
@@ -176,6 +192,7 @@ MapCompletionTracker_EXTERNAL_OBJECTS =
 
 MapCompletionTracker.dll: CMakeFiles/MapCompletionTracker.dir/src/AddonMain.cpp.obj
 MapCompletionTracker.dll: CMakeFiles/MapCompletionTracker.dir/src/Shared.cpp.obj
+MapCompletionTracker.dll: CMakeFiles/MapCompletionTracker.dir/src/EventDebug.cpp.obj
 MapCompletionTracker.dll: CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui.cpp.obj
 MapCompletionTracker.dll: CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_draw.cpp.obj
 MapCompletionTracker.dll: CMakeFiles/MapCompletionTracker.dir/third_party/imgui/imgui_tables.cpp.obj
@@ -184,7 +201,7 @@ MapCompletionTracker.dll: CMakeFiles/MapCompletionTracker.dir/build.make
 MapCompletionTracker.dll: CMakeFiles/MapCompletionTracker.dir/linkLibs.rsp
 MapCompletionTracker.dll: CMakeFiles/MapCompletionTracker.dir/objects1.rsp
 MapCompletionTracker.dll: CMakeFiles/MapCompletionTracker.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/todd/gw2-mapcompletion/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX shared library MapCompletionTracker.dll"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/todd/gw2-mapcompletion/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX shared library MapCompletionTracker.dll"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/MapCompletionTracker.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
