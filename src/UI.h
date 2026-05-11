@@ -137,15 +137,15 @@ public:
 
         ImGui::Spacing();
 
-        // ---- Current map info ----
+        // ---- Current map info (only shown when on a tracked map) ----
         if (MumbleLinkData && MumbleLinkData->uiTick > 0)
         {
             uint32_t mapId = 0;
-            if (MumbleLinkData->context_len >= 12)
-                mapId = (uint32_t)MumbleLinkData->context[8]
-                      | ((uint32_t)MumbleLinkData->context[9]  << 8)
-                      | ((uint32_t)MumbleLinkData->context[10] << 16)
-                      | ((uint32_t)MumbleLinkData->context[11] << 24);
+            if (MumbleLinkData->context_len >= 32)
+                mapId = (uint32_t)MumbleLinkData->context[28]
+                      | ((uint32_t)MumbleLinkData->context[29] << 8)
+                      | ((uint32_t)MumbleLinkData->context[30] << 16)
+                      | ((uint32_t)MumbleLinkData->context[31] << 24);
             if (mapId != 0)
             {
                 const auto& byId = GetMapsById();
@@ -159,14 +159,8 @@ public:
                         it->second->name.c_str(),
                         curDone ? "COMPLETE" : "incomplete");
                 }
-                else
-                    ImGui::TextDisabled("Current map ID %u (not tracked)", mapId);
             }
-            else
-                ImGui::TextDisabled("Not in a tracked map");
         }
-        else
-            ImGui::TextDisabled("Not in game");
 
         ImGui::Separator();
 
@@ -228,7 +222,7 @@ public:
                              "%zu / %zu  (%.1f%%)", tabDone, tabTotal, tabProgress * 100.0f);
                     ImGui::ProgressBar(tabProgress, ImVec2(-1, 14), tabProgressLabel);
                     ImGui::PopStyleColor();
-                    ImGui::Spacing();
+        ImGui::Spacing();
 
                     ImGui::BeginChild("##mapslist", ImVec2(0, 0), false, ImGuiWindowFlags_None);
 

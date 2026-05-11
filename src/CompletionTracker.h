@@ -23,6 +23,7 @@ public:
     {
         m_savePath = dataDir.empty() ? "completion.json" : dataDir + "\\completion.json";
         Load();
+        m_initialized = true;  // Mark as loaded before allowing saves
     }
 
     void SetActiveCharacter(const std::string& name)
@@ -50,7 +51,7 @@ public:
             if (m_data.find(name) == m_data.end())
                 m_data[name] = {};
         }
-        if (changed) Save();
+        if (changed && m_initialized) Save();
     }
 
     // Called for a single character (e.g. from MumbleLink)
@@ -61,7 +62,8 @@ public:
         bool changed = m_knownCharacters.insert(name).second;
         if (m_data.find(name) == m_data.end())
             m_data[name] = {};
-        if (changed) Save();
+        // Only save after initialization is complete to avoid wiping data
+        if (changed && m_initialized) Save();
     }
 
     const std::string& GetActiveCharacter() const { return m_activeCharacter; }
@@ -195,4 +197,5 @@ private:
     std::unordered_set<std::string>                                m_knownCharacters;
     std::string                                                    m_activeCharacter = UNKNOWN_CHARACTER;
     std::string                                                    m_savePath;
+    bool                                                           m_initialized = false;
 };
