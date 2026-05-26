@@ -58,3 +58,6 @@ src/MapCompletionAPI.h
 # be tracked because it contains user-specific completion state and
 # potentially API keys from older versions).
 completion.json
+
+# Local maintainer notes (continuity-of-development; not tracked).
+TODO.md
