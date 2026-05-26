@@ -1,0 +1,60 @@
+# Build artifacts
+build/
+*.dll
+*.dll.a
+*.exe
+*.o
+*.a
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+
+# Ninja
+.ninja_deps
+.ninja_log
+build.ninja
+
+# Local toolchain
+toolchain-mingw.cmake
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# AI/Assistant
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Block accidental re-introduction of memory-scanning research or
+# debug-tool artifacts. None of these are part of the addon; they were
+# stripped from this repo and must never be re-added here.
+scanner/
+src/MemScanner.*
+**/memtools.h
+*.heap
+heap_dumps/
+heapsnaps/
+fastscan_snaps/
+precise_snaps/
+memscan*.log
+debug_mapinfo.txt
+log_before_*.txt
+log_after_*.txt
+Lessons_Learned
+Lessons_Learned.*
+src/EventDebug.cpp
+src/GW2API.h
+src/MapCompletionAPI.h
+
+# Per-user runtime data (created by the addon at runtime; should never
+# be tracked because it contains user-specific completion state and
+# potentially API keys from older versions).
+completion.json
