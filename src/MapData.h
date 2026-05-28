@@ -164,6 +164,7 @@ inline const std::vector<MapInfo>& GetAllMaps()
         // =========================================================
         { 1595, "Shipwreck Strand",    "Castora",        TAB_VOE, "Shipwreck Strand" },
         { 1593, "Starlit Weald",       "Castora",        TAB_VOE, "Starlit Weald" },
+        { 1622, "Eternity's Garden",   "Castora",        TAB_VOE, "Eternity's Garden" },
     };
     return maps;
 }
