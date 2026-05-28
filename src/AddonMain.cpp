@@ -57,7 +57,7 @@ extern "C" __declspec(dllexport) AddonDefinition_t* GetAddonDef()
     s_addonDef.Signature   = -19823;
     s_addonDef.APIVersion  = NEXUS_API_VERSION;
     s_addonDef.Name        = "Map Completion Tracker";
-    s_addonDef.Version     = { 1, 2, 0, 0 };
+    s_addonDef.Version     = { 1, 3, 0, 0 };
     s_addonDef.Author      = "Todd0042";
     s_addonDef.Description = "Tracks GW2 map completion per character.";
     s_addonDef.Load        = AddonLoad;
