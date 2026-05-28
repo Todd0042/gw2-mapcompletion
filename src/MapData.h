@@ -13,8 +13,12 @@ struct MapInfo
     std::string completionText;
 };
 
-// Tab names — used in UI tab bar
-#define TAB_CORE      "Core Tyria + LW1/2"
+// Card names — one clickable card per group in the UI strip.
+// NOTE: Core Tyria is the set of maps required for the Gift of Exploration
+// (legendary precursor). LW Season 1 & 2 are split into their own card
+// because they are NOT required for that gift.
+#define TAB_CORE      "Core Tyria"
+#define TAB_LW12      "Living World 1 & 2"
 #define TAB_HOT       "HoT + LW3"
 #define TAB_POF       "PoF + LW4"
 #define TAB_ICEBROOD  "Icebrood Saga"
@@ -29,7 +33,9 @@ inline const std::vector<MapInfo>& GetAllMaps()
     static std::vector<MapInfo> maps =
     {
         // =========================================================
-        // TAB: Core Tyria + Living World Season 1 & 2
+        // CARD: Core Tyria
+        // (Maps required for the Gift of Exploration. LW1/2 are split
+        //  into their own card below since they are NOT required.)
         // =========================================================
 
         // ---- Kryta ----
@@ -72,15 +78,21 @@ inline const std::vector<MapInfo>& GetAllMaps()
         {  62,  "Cursed Shore",           "Ruins of Orr", TAB_CORE, "Cursed Shore" },
         {  65,  "Malchor's Leap",         "Ruins of Orr", TAB_CORE, "Malchor's Leap" },
 
+        // =========================================================
+        // CARD: Living World Season 1 & 2
+        // (NOT required for the Gift of Exploration — split out from
+        //  Core Tyria so the Core card reflects the legendary requirement.)
+        // =========================================================
+
         // ---- Living World Season 1 ----
-        { 873,  "Southsun Cove",       "LW Season 1",    TAB_CORE, "Southsun Cove" },
+        { 873,  "Southsun Cove",       "LW Season 1",    TAB_LW12, "Southsun Cove" },
 
         // ---- Living World Season 2 ----
-        { 988,  "Dry Top",             "LW Season 2",    TAB_CORE, "Dry Top" },
-        { 1015, "The Silverwastes",    "LW Season 2",    TAB_CORE, "The Silverwastes" },
+        { 988,  "Dry Top",             "LW Season 2",    TAB_LW12, "Dry Top" },
+        { 1015, "The Silverwastes",    "LW Season 2",    TAB_LW12, "The Silverwastes" },
 
         // =========================================================
-        // TAB: Heart of Thorns + Living World Season 3
+        // CARD: Heart of Thorns + Living World Season 3
         // =========================================================
 
         // ---- Heart of Thorns ----
@@ -98,7 +110,7 @@ inline const std::vector<MapInfo>& GetAllMaps()
         { 1203, "Siren's Landing",     "LW Season 3",    TAB_HOT, "Siren's Landing" },
 
         // =========================================================
-        // TAB: Path of Fire + Living World Season 4
+        // CARD:Path of Fire + Living World Season 4
         // =========================================================
 
         // ---- Path of Fire ----
@@ -117,14 +129,14 @@ inline const std::vector<MapInfo>& GetAllMaps()
         { 1317, "Dragonfall",          "LW Season 4",    TAB_POF, "Dragonfall" },
 
         // =========================================================
-        // TAB: Icebrood Saga (LW Season 5)
+        // CARD:Icebrood Saga (LW Season 5)
         // =========================================================
         { 1330, "Grothmar Valley",     "Icebrood Saga",  TAB_ICEBROOD, "Grothmar Valley" },
         { 1300, "Bjora Marches",       "Icebrood Saga",  TAB_ICEBROOD, "Bjora Marches" },
         { 1370, "Drizzlewood Coast",   "Icebrood Saga",  TAB_ICEBROOD, "Drizzlewood Coast" },
 
         // =========================================================
-        // TAB: End of Dragons
+        // CARD:End of Dragons
         // =========================================================
         { 1442, "Seitung Province",    "Cantha",         TAB_EOD, "Seitung Province" },
         { 1438, "New Kaineng City",    "Cantha",         TAB_EOD, "New Kaineng City" },
@@ -133,14 +145,14 @@ inline const std::vector<MapInfo>& GetAllMaps()
         { 1490, "Gyala Delve",         "Cantha",         TAB_EOD, "Gyala Delve" },
 
         // =========================================================
-        // TAB: Secrets of the Obscure
+        // CARD:Secrets of the Obscure
         // =========================================================
         { 1510, "Skywatch Archipelago","Realm of Dreams", TAB_SOTO, "Skywatch Archipelago" },
         { 1517, "Amnytas",             "Realm of Dreams", TAB_SOTO, "Amnytas" },
         { 1526, "Inner Nayos",         "Nayos",           TAB_SOTO, "Inner Nayos" },
 
         // =========================================================
-        // TAB: Janthir Wilds
+        // CARD:Janthir Wilds
         // =========================================================
         { 1550, "Lowland Shore",       "Janthir",        TAB_JANTHIR, "Lowland Shore" },
         { 1554, "Janthir Syntri",      "Janthir",        TAB_JANTHIR, "Janthir Syntri" },
@@ -148,7 +160,7 @@ inline const std::vector<MapInfo>& GetAllMaps()
         { 1574, "Bava Nisos",          "Janthir",        TAB_JANTHIR, "Bava Nisos" },
 
         // =========================================================
-        // TAB: Visions of Eternity
+        // CARD:Visions of Eternity
         // =========================================================
         { 1595, "Shipwreck Strand",    "Castora",        TAB_VOE, "Shipwreck Strand" },
         { 1593, "Starlit Weald",       "Castora",        TAB_VOE, "Starlit Weald" },
@@ -180,11 +192,12 @@ inline const std::unordered_map<uint32_t, const MapInfo*>& GetMapsById()
     return index;
 }
 
-// Returns ordered list of unique tab names
+// Returns ordered list of unique card names (left-to-right in the UI strip)
 inline const std::vector<std::string>& GetTabOrder()
 {
     static std::vector<std::string> tabs = {
         TAB_CORE,
+        TAB_LW12,
         TAB_HOT,
         TAB_POF,
         TAB_ICEBROOD,
