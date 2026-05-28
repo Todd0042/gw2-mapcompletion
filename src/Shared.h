@@ -12,21 +12,33 @@ extern MumbleLink*  MumbleLinkData;
 extern char         g_currentCharName[20];
 
 // Most-recent MumbleLink-reported map ID. Updated on every identity event.
-// Used by OnTotalXPSourceEvent so we can look up the just-completed map when
-// the XPSourceEvent fires (the event payload has no map id of its own).
+// Retained for telemetry; the new EV_REWARD:MapCompletion event carries
+// the map id in its payload, so we no longer need it for detection.
 extern uint32_t     g_currentMapId;
 
-// Pending auto-detected map completion event from total-events DLL.
-// When EV_TOTAL:MapCompleted fires, this is populated and the UI shows a
-// confirmation modal asking whether to mark the map complete for the active
-// character. Cleared (mapId=0) once the user responds.
+// Pending auto-detected map completion. Populated when EV_REWARD:MapCompletion
+// fires (from the char-events addon). The popup auto-marks the map complete
+// for the active character on first render and shows a confirmation toast
+// with a Revert button. The toast self-destructs after 15 seconds.
+//
+//   firedAt        — GetTickCount() when the event arrived; used for the
+//                    15-second auto-destroy.
+//   markedComplete — true after the popup has applied the auto-mark. Prevents
+//                    re-marking on subsequent renders.
 #include <atomic>
 #include <string>
 #include <mutex>
+#include <windows.h>  // DWORD, GetTickCount
 struct PendingMapComp {
-    uint32_t    mapId   = 0;      // 0 = nothing pending
-    std::string mapName;          // raw name from the event payload
-    std::string character;        // character at the time of detection (Mumble)
+    uint32_t    mapId          = 0;     // 0 = nothing pending
+    std::string mapName;                  // resolved from MapId
+    std::string character;                // active character at fire time
+    DWORD       firedAt        = 0;     // GetTickCount() snapshot for 15-s TTL
+    bool        markedComplete = false; // popup has applied the auto-mark
 };
 extern PendingMapComp g_pendingMapComp;
 extern std::mutex     g_pendingMapCompMtx;
+
+// Toast lifetime in milliseconds. After this elapses, the popup self-destroys
+// and the auto-mark stays in place (user didn't click Revert).
+constexpr DWORD kMapCompToastTtlMs = 15000;

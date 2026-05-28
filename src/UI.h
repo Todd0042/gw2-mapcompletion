@@ -292,50 +292,83 @@ public:
         ImGui::Spacing();
         ImGui::Separator();
         ImGui::TextDisabled(
-            "Auto-detect map completion: install the GW2 XP Events addon "
-            "(https://github.com/Todd0042/gw2-events-xp). If it is loaded, "
-            "completion fires a confirmation popup automatically; if not, "
-            "this tracker still works as a manual checklist.");
+            "Auto-detect map completion: install the char-events addon "
+            "(https://github.com/Todd0042/char-events). When loaded, the "
+            "tracker auto-marks the active character's completion the moment "
+            "GW2 receives the chest from the server and shows a 15-second "
+            "revert toast. Without char-events, this tracker still works "
+            "as a manual checklist.");
     }
 
 public:
-    // ── Auto-detected map completion popup ───────────────────────────────────
+    // ── Auto-detected map completion toast ───────────────────────────────────
     // Standalone ImGui window pinned to the bottom-right of the screen.
-    // Renders independently of the main window. Reads g_pendingMapComp (set by
-    // OnTotalMapCompleted) and shows Yes/No buttons.
+    // Renders independently of the main window. Fired by OnRewardMapCompletion
+    // when EV_REWARD:MapCompletion arrives from the char-events addon.
+    //
+    // Behavior:
+    //   1. On first render after the event, auto-mark the map complete for the
+    //      character recorded at fire time (no user confirmation needed —
+    //      EV_REWARD:MapCompletion is authoritative).
+    //   2. Show a toast with character + map name and a Revert button.
+    //   3. After kMapCompToastTtlMs (15 s) the toast self-destructs and the
+    //      auto-mark stays in place.
     //
     // Uses ImGui::Begin (NOT ImGui::OpenPopup / BeginPopupModal) — modal popups
     // can crash when state is set from background event-dispatch threads.
     void RenderPendingMapCompletionPopup()
     {
-        uint32_t    mapId; std::string mapName, character;
+        // Snapshot the pending state under lock so we can release it before
+        // any expensive work or ImGui calls.
+        uint32_t    mapId;
+        std::string mapName, character;
+        DWORD       firedAt;
+        bool        alreadyMarked;
         {
             std::lock_guard<std::mutex> lk(g_pendingMapCompMtx);
-            mapId     = g_pendingMapComp.mapId;
-            mapName   = g_pendingMapComp.mapName;
-            character = g_pendingMapComp.character;
+            mapId         = g_pendingMapComp.mapId;
+            mapName       = g_pendingMapComp.mapName;
+            character     = g_pendingMapComp.character;
+            firedAt       = g_pendingMapComp.firedAt;
+            alreadyMarked = g_pendingMapComp.markedComplete;
         }
         if (mapId == 0) return;
 
+        // Resolve the character to apply to: prefer the snapshot from event
+        // time; fall back to the currently-active character if it was unknown
+        // at fire time.
         std::string applyTo = character;
-        if (applyTo.empty() || applyTo == "__unknown__")
+        if (applyTo.empty() || applyTo == "(unknown)" || applyTo == "__unknown__")
         {
             if (g_currentCharName[0]) applyTo = g_currentCharName;
         }
 
-        // Auto-dismiss if this map is already marked complete for the character
-        if (!applyTo.empty() && applyTo != "__unknown__" &&
-            m_tracker && m_tracker->IsCompleteFor(applyTo, mapId))
+        // 15-second TTL: clear and stop drawing once elapsed.
+        DWORD elapsed = GetTickCount() - firedAt;
+        if (elapsed >= kMapCompToastTtlMs)
         {
             std::lock_guard<std::mutex> lk(g_pendingMapCompMtx);
             g_pendingMapComp = {};
             return;
         }
 
+        // First render after the event: auto-mark complete.
+        if (!alreadyMarked &&
+            m_tracker && !applyTo.empty() && applyTo != "(unknown)" && applyTo != "__unknown__")
+        {
+            m_tracker->MarkCompleteFor(applyTo, mapId);
+            std::lock_guard<std::mutex> lk(g_pendingMapCompMtx);
+            g_pendingMapComp.markedComplete = true;
+        }
+
+        // Bottom-right placement. Offset 75 px further left so the toast
+        // doesn't sit on top of GW2's right-side chat/event UI.
         const ImGuiIO& io = ImGui::GetIO();
         const float w = 380.0f, h = 130.0f;
         const float margin = 24.0f;
-        ImVec2 pos(io.DisplaySize.x - w - margin, io.DisplaySize.y - h - margin);
+        const float rightOffset = 75.0f;
+        ImVec2 pos(io.DisplaySize.x - w - margin - rightOffset,
+                   io.DisplaySize.y - h - margin);
         ImGui::SetNextWindowPos(pos, ImGuiCond_Always);
         ImGui::SetNextWindowSize(ImVec2(w, h), ImGuiCond_Always);
 
@@ -344,37 +377,52 @@ public:
             ImGuiWindowFlags_NoResize |
             ImGuiWindowFlags_NoSavedSettings;
         bool open = true;
-        if (!ImGui::Begin("Map Completion Detected##autodetect", &open, flags))
+        if (!ImGui::Begin("Map Completed##autodetect", &open, flags))
         {
             ImGui::End();
             return;
         }
 
-        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f), "%s", mapName.c_str());
+        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f),
+                           "Map completed: %s", mapName.c_str());
         ImGui::TextDisabled("Character: %s   Map ID: %u",
                             applyTo.empty() ? "(unknown)" : applyTo.c_str(), mapId);
-        ImGui::Spacing();
-        ImGui::TextWrapped("Mark this map as complete for %s?",
-                           applyTo.empty() ? "the current character" : applyTo.c_str());
+
+        // Countdown so users can see the auto-dismiss timer.
+        DWORD remainingMs = (elapsed < kMapCompToastTtlMs)
+                            ? (kMapCompToastTtlMs - elapsed) : 0;
+        ImGui::TextDisabled("Auto-marked complete. Dismisses in %us.",
+                            (unsigned)((remainingMs + 999) / 1000));
         ImGui::Spacing();
 
-        bool clickedYes = ImGui::Button("Yes", ImVec2(80, 0));
-        ImGui::SameLine();
-        bool clickedNo  = ImGui::Button("No",  ImVec2(80, 0));
+        bool clickedRevert = ImGui::Button("Revert", ImVec2(90, 0));
 
-        if (!open) clickedNo = true;  // X button = No
+        if (!open) clickedRevert = false;  // X button just closes the toast;
+                                            // the auto-mark stays applied.
 
         ImGui::End();
 
-        if (clickedYes)
+        if (clickedRevert)
         {
-            if (!applyTo.empty() && applyTo != "__unknown__" && m_tracker)
-                m_tracker->MarkCompleteFor(applyTo, mapId);
+            if (!applyTo.empty() && applyTo != "(unknown)" && applyTo != "__unknown__"
+                && m_tracker)
+            {
+                m_tracker->MarkIncompleteFor(applyTo, mapId);
+                if (APIDefs)
+                {
+                    char buf[200];
+                    snprintf(buf, sizeof(buf),
+                             "Reverted auto-mark: map='%s' (id=%u) character='%s'",
+                             mapName.c_str(), mapId, applyTo.c_str());
+                    APIDefs->Log(LOGL_INFO, "MapCompletionTracker", buf);
+                }
+            }
             std::lock_guard<std::mutex> lk(g_pendingMapCompMtx);
             g_pendingMapComp = {};
         }
-        else if (clickedNo)
+        else if (!open)
         {
+            // X button: dismiss toast, keep the auto-mark.
             std::lock_guard<std::mutex> lk(g_pendingMapCompMtx);
             g_pendingMapComp = {};
         }

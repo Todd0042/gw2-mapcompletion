@@ -10,10 +10,11 @@ provides a per-character map-completion checklist.
   and an overall progress bar. Always available; check maps off as you
   complete them.
 - **Optional auto-detect** — if the
-  [gw2-events-xp](https://github.com/Todd0042/gw2-events-xp) addon is
-  also installed, a confirmation popup appears the moment GW2 awards
-  map-completion XP. One click marks the current map complete for the
-  active character. Without gw2-events-xp the tracker simply runs as
+  [char-events](https://github.com/Todd0042/char-events) addon is
+  also installed, the current map is auto-marked complete for the
+  active character the moment GW2 delivers the map-completion chest. A
+  toast appears bottom-right with a Revert button and self-dismisses
+  after 15 seconds. Without char-events the tracker simply runs as
   a manual checklist.
 
 Characters are detected automatically via the standard Nexus MumbleLink

@@ -26,7 +26,7 @@ void OnRender                ();
 void OnRenderOptions         ();
 void OnKeybind               (const char* aIdentifier, bool aIsRelease);
 void OnMumbleIdentityUpdated (void* aEventArgs);
-void OnTotalXPSourceEvent    (void* aEventArgs);
+void OnRewardMapCompletion   (void* aEventArgs);
 // ---------------------------------------------------------------------------
 //  Globals
 // ---------------------------------------------------------------------------
@@ -57,7 +57,7 @@ extern "C" __declspec(dllexport) AddonDefinition_t* GetAddonDef()
     s_addonDef.Signature   = -19823;
     s_addonDef.APIVersion  = NEXUS_API_VERSION;
     s_addonDef.Name        = "Map Completion Tracker";
-    s_addonDef.Version     = { 1, 1, 0, 0 };
+    s_addonDef.Version     = { 1, 2, 0, 0 };
     s_addonDef.Author      = "Todd0042";
     s_addonDef.Description = "Tracks GW2 map completion per character.";
     s_addonDef.Load        = AddonLoad;
@@ -93,8 +93,8 @@ void AddonLoad(AddonAPI_t* aApi)
     APIDefs->GUI_Register(RT_Render,        OnRender);
     APIDefs->GUI_Register(RT_OptionsRender, OnRenderOptions);
 
-    APIDefs->Events_Subscribe("EV_MUMBLE_IDENTITY_UPDATED", OnMumbleIdentityUpdated);
-    APIDefs->Events_Subscribe("EV_XP:SourceEvent",           OnTotalXPSourceEvent);
+    APIDefs->Events_Subscribe("EV_MUMBLE_IDENTITY_UPDATED",   OnMumbleIdentityUpdated);
+    APIDefs->Events_Subscribe("EV_REWARD:MapCompletion",       OnRewardMapCompletion);
 
     APIDefs->InputBinds_RegisterWithString(
         "KB_MAPCOMPLETION_TOGGLE",
@@ -123,8 +123,8 @@ void AddonLoad(AddonAPI_t* aApi)
 // ---------------------------------------------------------------------------
 void AddonUnload()
 {
-    APIDefs->Events_Unsubscribe("EV_MUMBLE_IDENTITY_UPDATED", OnMumbleIdentityUpdated);
-    APIDefs->Events_Unsubscribe("EV_XP:SourceEvent",           OnTotalXPSourceEvent);
+    APIDefs->Events_Unsubscribe("EV_MUMBLE_IDENTITY_UPDATED",   OnMumbleIdentityUpdated);
+    APIDefs->Events_Unsubscribe("EV_REWARD:MapCompletion",       OnRewardMapCompletion);
     APIDefs->GUI_Deregister(OnRender);
     APIDefs->GUI_Deregister(OnRenderOptions);
     APIDefs->InputBinds_Deregister("KB_MAPCOMPLETION_TOGGLE");
@@ -184,67 +184,73 @@ void OnMumbleIdentityUpdated(void* aEventArgs)
 }
 
 // ---------------------------------------------------------------------------
-//  OnTotalXPSourceEvent
-//  Subscribed to "EV_XP:SourceEvent" from the gw2-events-xp DLL (formerly
-//  EV_TOTAL:XPSourceEvent from total-events). Fires whenever GW2 grants
-//  XP from a known internal source. We only care about SourceCode == 13
-//  (map completion). Layout matches gw2_events_xp.h::GW2XP_SourceEvent.
+//  OnRewardMapCompletion
+//  Subscribed to "EV_REWARD:MapCompletion" from the char-events DLL. Fires
+//  the moment GW2 receives a CHAR_REWARD_MAP_COMPLETION (rewardType=1) message
+//  from the server — BEFORE the player accepts the popup chest. Level-
+//  independent and standalone (no ArcDPS required, no XP-delta heuristic).
 //
-//  This event fires the moment the game grants map-completion XP — i.e. when
-//  the player accepts the reward chest. It is more reliable than the popup
-//  scanner (which only fires at level 80 with the visible 8001-XP popup
-//  string) because the SourceCode is GW2's internal enum value, not a heuristic.
+//  Payload layout (mirrors char_events.h::GW2Reward_Any):
+//      { uint32_t RewardType; uint32_t MapId; }
 //
-//  The event payload does NOT carry a map id, so we use the most-recent
-//  Mumble map id (g_currentMapId, updated on every identity event).
+//  Behavior: this handler sets g_pendingMapComp with the map id + character.
+//  The UI thread (RenderPendingMapCompletionPopup) reads it, auto-marks the
+//  map complete for the active character on first render, and shows a
+//  15-second toast with a Revert button.
 // ---------------------------------------------------------------------------
-static constexpr uint32_t TOTAL_XPSRC_MAP_COMPLETION = 13;  // mirrors gw2_events_xp.h::GW2XP_SRC_MAP_COMPLETION
-void OnTotalXPSourceEvent(void* aEventArgs)
+void OnRewardMapCompletion(void* aEventArgs)
 {
     if (!aEventArgs) return;
-    // Layout: { uint32_t SourceCode; uint32_t PreXP; uint64_t PayloadAddr; }
-    struct Payload { uint32_t SourceCode; uint32_t PreXP; uint64_t PayloadAddr; };
+    // Matches char_events.h::GW2Reward_Any exactly: RewardType FIRST,
+    // MapId SECOND. Don't reorder — the layout is wire-compatible.
+    struct Payload { uint32_t RewardType; uint32_t MapId; };
     const Payload* p = static_cast<const Payload*>(aEventArgs);
 
-    if (p->SourceCode != TOTAL_XPSRC_MAP_COMPLETION) return;
+    // Defensive: char-events publishes the named event only for type 1,
+    // but the payload still carries the type code for symmetry with EV_REWARD:Any.
+    if (p->RewardType != 1) return;
 
-    uint32_t mapId = g_currentMapId;
+    uint32_t mapId = p->MapId;
     if (mapId == 0) {
         if (APIDefs) APIDefs->Log(LOGL_WARNING, "MapCompletionTracker",
-            "OnTotalXPSourceEvent: map completion fired but Mumble map id is 0");
+            "OnRewardMapCompletion: payload MapId is 0");
         return;
     }
 
-    // Resolve map id → MapInfo
+    // Resolve map id → MapInfo for the toast text. Unknown id is logged but
+    // we still mark complete (the tracker doesn't require a known name).
     const auto& byId = GetMapsById();
     auto it = byId.find(mapId);
-    if (it == byId.end()) {
+    std::string mapName;
+    if (it != byId.end()) {
+        mapName = it->second->name;
+    } else {
+        mapName = "(unknown map)";
         if (APIDefs) {
             char buf[128];
             snprintf(buf, sizeof(buf),
-                     "OnTotalXPSourceEvent: unknown map id %u (XP source event)", mapId);
+                     "OnRewardMapCompletion: unknown map id %u", mapId);
             APIDefs->Log(LOGL_WARNING, "MapCompletionTracker", buf);
         }
-        return;
     }
-    const std::string& mapName = it->second->name;
 
     std::string charNow = g_currentCharName;
     if (charNow.empty()) charNow = "(unknown)";
 
     {
         std::lock_guard<std::mutex> lk(g_pendingMapCompMtx);
-        if (g_pendingMapComp.mapId != 0 && g_pendingMapComp.mapId != mapId) return;
-        g_pendingMapComp.mapId     = mapId;
-        g_pendingMapComp.mapName   = mapName;
-        g_pendingMapComp.character = charNow;
+        g_pendingMapComp.mapId          = mapId;
+        g_pendingMapComp.mapName        = mapName;
+        g_pendingMapComp.character      = charNow;
+        g_pendingMapComp.firedAt        = GetTickCount();
+        g_pendingMapComp.markedComplete = false;
     }
 
     if (APIDefs) {
         char buf[256];
         snprintf(buf, sizeof(buf),
-                 "Auto-detected map completion (via XPSourceEvent): map='%s' (id=%u) character='%s' preXP=%u",
-                 mapName.c_str(), mapId, charNow.c_str(), p->PreXP);
+                 "Auto-detected map completion: map='%s' (id=%u) character='%s'",
+                 mapName.c_str(), mapId, charNow.c_str());
         APIDefs->Log(LOGL_INFO, "MapCompletionTracker", buf);
     }
 }
