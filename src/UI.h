@@ -476,6 +476,7 @@ private:
     static ImVec4 ExpansionColor(const std::string& tab)
     {
         if (tab == TAB_CORE)     return ImVec4(0.45f, 0.65f, 0.95f, 1);
+        if (tab == TAB_LW12)     return ImVec4(0.85f, 0.78f, 0.55f, 1);
         if (tab == TAB_HOT)      return ImVec4(0.55f, 0.88f, 0.45f, 1);
         if (tab == TAB_POF)      return ImVec4(0.95f, 0.65f, 0.30f, 1);
         if (tab == TAB_ICEBROOD) return ImVec4(0.55f, 0.85f, 0.95f, 1);
@@ -489,6 +490,7 @@ private:
     static const char* TabShortLabel(const std::string& t)
     {
         if (t == TAB_CORE)     return "Core";
+        if (t == TAB_LW12)     return "LW1-2";
         if (t == TAB_HOT)      return "HoT";
         if (t == TAB_POF)      return "PoF";
         if (t == TAB_ICEBROOD) return "IBS";
