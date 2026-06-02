@@ -44,6 +44,7 @@ inline const std::vector<MapInfo>& GetAllMaps()
         {  23,  "Kessex Hills",        "Kryta",          TAB_CORE, "Kessex Hills" },
         {  24,  "Gendarran Fields",    "Kryta",          TAB_CORE, "Gendarran Fields" },
         {  50,  "Lion's Arch",         "Kryta",          TAB_CORE, "Lion's Arch" },
+        {  65,  "Harathi Hinterlands", "Kryta",          TAB_CORE, "Harathi Hinterlands" },
         {  73,  "Bloodtide Coast",     "Kryta",          TAB_CORE, "Bloodtide Coast" },
 
         // ---- Shiverpeak Mountains ----
@@ -151,6 +152,7 @@ inline const std::vector<MapInfo>& GetAllMaps()
         // =========================================================
         // CARD:Secrets of the Obscure
         // =========================================================
+        { 1509, "The Wizard's Tower",  "Realm of Dreams", TAB_SOTO, "The Wizard's Tower" },
         { 1510, "Skywatch Archipelago","Realm of Dreams", TAB_SOTO, "Skywatch Archipelago" },
         { 1517, "Amnytas",             "Realm of Dreams", TAB_SOTO, "Amnytas" },
         { 1526, "Inner Nayos",         "Nayos",           TAB_SOTO, "Inner Nayos" },
