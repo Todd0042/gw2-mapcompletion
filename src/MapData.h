@@ -47,30 +47,30 @@ inline const std::vector<MapInfo>& GetAllMaps()
         {  73,  "Bloodtide Coast",     "Kryta",          TAB_CORE, "Bloodtide Coast" },
 
         // ---- Shiverpeak Mountains ----
-        {  31,  "Snowden Drifts",      "Shiverpeak",     TAB_CORE, "Snowden Drifts" },
-        {  27,  "Lornar's Pass",       "Shiverpeak",     TAB_CORE, "Lornar's Pass" },
         {  26,  "Dredgehaunt Cliffs",  "Shiverpeak",     TAB_CORE, "Dredgehaunt Cliffs" },
+        {  27,  "Lornar's Pass",       "Shiverpeak",     TAB_CORE, "Lornar's Pass" },
+        {  28,  "Wayfarer Foothills",  "Shiverpeak",     TAB_CORE, "Wayfarer Foothills" },
         {  29,  "Timberline Falls",    "Shiverpeak",     TAB_CORE, "Timberline Falls" },
         {  30,  "Frostgorge Sound",    "Shiverpeak",     TAB_CORE, "Frostgorge Sound" },
-        {  28,  "Wayfarer Foothills",  "Shiverpeak",     TAB_CORE, "Wayfarer Foothills" },
+        {  31,  "Snowden Drifts",      "Shiverpeak",     TAB_CORE, "Snowden Drifts" },
         { 326,  "Hoelbrak",            "Shiverpeak",     TAB_CORE, "Hoelbrak" },
 
         // ---- Ascalon ----
-        {  21,  "Fields of Ruin",      "Ascalon",        TAB_CORE, "Fields of Ruin" },
-        {  20,  "Blazeridge Steppes",  "Ascalon",        TAB_CORE, "Blazeridge Steppes" },
-        {  25,  "Iron Marches",        "Ascalon",        TAB_CORE, "Iron Marches" },
-        {  22,  "Fireheart Rise",      "Ascalon",        TAB_CORE, "Fireheart Rise" },
         {  19,  "Plains of Ashford",   "Ascalon",        TAB_CORE, "Plains of Ashford" },
+        {  20,  "Blazeridge Steppes",  "Ascalon",        TAB_CORE, "Blazeridge Steppes" },
+        {  21,  "Fields of Ruin",      "Ascalon",        TAB_CORE, "Fields of Ruin" },
+        {  22,  "Fireheart Rise",      "Ascalon",        TAB_CORE, "Fireheart Rise" },
+        {  25,  "Iron Marches",        "Ascalon",        TAB_CORE, "Iron Marches" },
         {  32,  "Diessa Plateau",      "Ascalon",        TAB_CORE, "Diessa Plateau" },
         { 218,  "Black Citadel",       "Ascalon",        TAB_CORE, "Black Citadel" },
 
         // ---- Maguuma Jungle ----
+        {  34,  "Caledon Forest",      "Maguuma Jungle", TAB_CORE, "Caledon Forest" },
+        {  35,  "Metrica Province",    "Maguuma Jungle", TAB_CORE, "Metrica Province" },
         {  39,  "Mount Maelstrom",     "Maguuma Jungle", TAB_CORE, "Mount Maelstrom" },
         {  53,  "Sparkfly Fen",        "Maguuma Jungle", TAB_CORE, "Sparkfly Fen" },
         {  54,  "Brisban Wildlands",   "Maguuma Jungle", TAB_CORE, "Brisban Wildlands" },
         {  91,  "The Grove",           "Maguuma Jungle", TAB_CORE, "The Grove" },
-        {  34,  "Caledon Forest",      "Maguuma Jungle", TAB_CORE, "Caledon Forest" },
-        {  35,  "Metrica Province",    "Maguuma Jungle", TAB_CORE, "Metrica Province" },
         { 139,  "Rata Sum",            "Maguuma Jungle", TAB_CORE, "Rata Sum" },
 
         // ---- Ruins of Orr ----
@@ -96,10 +96,10 @@ inline const std::vector<MapInfo>& GetAllMaps()
         // =========================================================
 
         // ---- Heart of Thorns ----
-        { 1052, "Verdant Brink",       "Heart of Thorns", TAB_HOT, "Verdant Brink" },
+        { 1041, "Dragon's Stand",      "Heart of Thorns", TAB_HOT, "Dragon's Stand" },
         { 1043, "Auric Basin",         "Heart of Thorns", TAB_HOT, "Auric Basin" },
         { 1045, "Tangled Depths",      "Heart of Thorns", TAB_HOT, "Tangled Depths" },
-        { 1041, "Dragon's Stand",      "Heart of Thorns", TAB_HOT, "Dragon's Stand" },
+        { 1052, "Verdant Brink",       "Heart of Thorns", TAB_HOT, "Verdant Brink" },
 
         // ---- Living World Season 3 ----
         { 1165, "Bloodstone Fen",      "LW Season 3",    TAB_HOT, "Bloodstone Fen" },
@@ -116,8 +116,8 @@ inline const std::vector<MapInfo>& GetAllMaps()
         // ---- Path of Fire ----
         { 1210, "Crystal Oasis",       "Path of Fire",   TAB_POF, "Crystal Oasis" },
         { 1211, "Desert Highlands",    "Path of Fire",   TAB_POF, "Desert Highlands" },
-        { 1228, "Elon Riverlands",     "Path of Fire",   TAB_POF, "Elon Riverlands" },
         { 1226, "The Desolation",      "Path of Fire",   TAB_POF, "The Desolation" },
+        { 1228, "Elon Riverlands",     "Path of Fire",   TAB_POF, "Elon Riverlands" },
         { 1248, "Domain of Vabbi",     "Path of Fire",   TAB_POF, "Domain of Vabbi" },
 
         // ---- Living World Season 4 ----
@@ -131,6 +131,8 @@ inline const std::vector<MapInfo>& GetAllMaps()
         // =========================================================
         // CARD:Icebrood Saga (LW Season 5)
         // =========================================================
+        // Ordered by release / story order — map IDs are not sequential here
+        // (Bjora 1300 < Grothmar 1330 despite Grothmar releasing first).
         { 1330, "Grothmar Valley",     "Icebrood Saga",  TAB_ICEBROOD, "Grothmar Valley" },
         { 1300, "Bjora Marches",       "Icebrood Saga",  TAB_ICEBROOD, "Bjora Marches" },
         { 1370, "Drizzlewood Coast",   "Icebrood Saga",  TAB_ICEBROOD, "Drizzlewood Coast" },
@@ -138,6 +140,8 @@ inline const std::vector<MapInfo>& GetAllMaps()
         // =========================================================
         // CARD:End of Dragons
         // =========================================================
+        // Ordered by story / release order — launch-map IDs are not in
+        // story order (Dragon's End 1422 is the final map, not the first).
         { 1442, "Seitung Province",    "Cantha",         TAB_EOD, "Seitung Province" },
         { 1438, "New Kaineng City",    "Cantha",         TAB_EOD, "New Kaineng City" },
         { 1452, "The Echovald Wilds",  "Cantha",         TAB_EOD, "The Echovald Wilds" },
@@ -156,14 +160,16 @@ inline const std::vector<MapInfo>& GetAllMaps()
         // =========================================================
         { 1550, "Lowland Shore",       "Janthir",        TAB_JANTHIR, "Lowland Shore" },
         { 1554, "Janthir Syntri",      "Janthir",        TAB_JANTHIR, "Janthir Syntri" },
+        // Ordered by release order — Mistburned Barrens (1575) released
+        // before Bava Nisos (1574), so the IDs run backwards here.
         { 1575, "Mistburned Barrens",  "Janthir",        TAB_JANTHIR, "Mistburned Barrens" },
         { 1574, "Bava Nisos",          "Janthir",        TAB_JANTHIR, "Bava Nisos" },
 
         // =========================================================
         // CARD:Visions of Eternity
         // =========================================================
-        { 1595, "Shipwreck Strand",    "Castora",        TAB_VOE, "Shipwreck Strand" },
         { 1593, "Starlit Weald",       "Castora",        TAB_VOE, "Starlit Weald" },
+        { 1595, "Shipwreck Strand",    "Castora",        TAB_VOE, "Shipwreck Strand" },
         { 1622, "Eternity's Garden",   "Castora",        TAB_VOE, "Eternity's Garden" },
     };
     return maps;

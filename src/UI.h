@@ -260,7 +260,7 @@ public:
             "Auto-detect map completion: install the char-events addon "
             "(https://github.com/Todd0042/char-events). When loaded, the "
             "tracker auto-marks the active character's completion the moment "
-            "GW2 receives the chest from the server and shows a 15-second "
+            "GW2 receives the chest from the server and shows a 5-second "
             "revert toast. Without char-events, this tracker still works "
             "as a manual checklist.");
     }

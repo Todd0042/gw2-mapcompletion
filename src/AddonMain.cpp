@@ -57,7 +57,7 @@ extern "C" __declspec(dllexport) AddonDefinition_t* GetAddonDef()
     s_addonDef.Signature   = -19823;
     s_addonDef.APIVersion  = NEXUS_API_VERSION;
     s_addonDef.Name        = "Map Completion Tracker";
-    s_addonDef.Version     = { 1, 3, 1, 0 };
+    s_addonDef.Version     = { 1, 3, 2, 0 };
     s_addonDef.Author      = "Todd0042";
     s_addonDef.Description = "Tracks GW2 map completion per character.";
     s_addonDef.Load        = AddonLoad;
@@ -196,7 +196,7 @@ void OnMumbleIdentityUpdated(void* aEventArgs)
 //  Behavior: this handler sets g_pendingMapComp with the map id + character.
 //  The UI thread (RenderPendingMapCompletionPopup) reads it, auto-marks the
 //  map complete for the active character on first render, and shows a
-//  15-second toast with a Revert button.
+//  5-second toast with a Revert button.
 // ---------------------------------------------------------------------------
 void OnRewardMapCompletion(void* aEventArgs)
 {

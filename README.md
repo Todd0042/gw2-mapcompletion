@@ -14,7 +14,7 @@ provides a per-character map-completion checklist.
   also installed, the current map is auto-marked complete for the
   active character the moment GW2 delivers the map-completion chest. A
   toast appears bottom-right with a Revert button and self-dismisses
-  after 15 seconds. Without char-events the tracker simply runs as
+  after 5 seconds. Without char-events the tracker simply runs as
   a manual checklist.
 
 Characters are detected automatically via the standard Nexus MumbleLink
