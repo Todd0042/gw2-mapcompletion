@@ -266,11 +266,20 @@ void OnRewardMapCompletion(void* aEventArgs)
 static const char* SWITCH_DATE = "2026-07-07";
 static void RenderCategoryDisclaimer()
 {
-    static bool s_ack = false;
+    static bool s_ack    = false;   // user confirmed + closed it this session
+    static bool s_opened = false;   // popup opened once
+    static bool s_read   = false;   // read-confirmation checkbox
     if (s_ack) return;
-    ImGui::SetNextWindowSize(ImVec2(470.0f, 0.0f), ImGuiCond_Appearing);
-    if (ImGui::Begin("Map Completion Tracker \xE2\x80\x94 Important Notice", nullptr,
-                     ImGuiWindowFlags_NoCollapse))
+
+    const char* kPopupId = "Map Completion Tracker \xE2\x80\x94 Important Notice###MapCompNotice";
+    if (!s_opened) { ImGui::OpenPopup(kPopupId); s_opened = true; }
+
+    // Center it; modal so the user can't ignore it — they must read + close manually.
+    ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+    ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    ImGui::SetNextWindowSize(ImVec2(480.0f, 0.0f), ImGuiCond_Appearing);
+
+    if (ImGui::BeginPopupModal(kPopupId, nullptr, ImGuiWindowFlags_AlwaysAutoResize))
     {
         ImGui::TextWrapped(
             "On %s, Map Completion Tracker will change to the \"memory reading\" addon "
@@ -281,11 +290,16 @@ static void RenderCategoryDisclaimer()
             "If you are not comfortable with an addon reading game memory, please uninstall "
             "Map Completion Tracker before %s.",
             SWITCH_DATE, SWITCH_DATE);
+        ImGui::Separator();
+        ImGui::Checkbox("I have read and understand this notice.", &s_read);
         ImGui::Spacing();
-        if (ImGui::Button("I understand"))
-            s_ack = true;
+        if (s_read) {
+            if (ImGui::Button("Close")) { s_ack = true; ImGui::CloseCurrentPopup(); }
+        } else {
+            ImGui::TextDisabled("Tick the box above to close this notice.");
+        }
+        ImGui::EndPopup();
     }
-    ImGui::End();
 }
 
 // ---------------------------------------------------------------------------
