@@ -94,7 +94,9 @@ void AddonLoad(AddonAPI_t* aApi)
     APIDefs->GUI_Register(RT_OptionsRender, OnRenderOptions);
 
     APIDefs->Events_Subscribe("EV_MUMBLE_IDENTITY_UPDATED",   OnMumbleIdentityUpdated);
-    APIDefs->Events_Subscribe("EV_REWARD:MapCompletion",       OnRewardMapCompletion);
+    // Auto-completion via the char-events broadcast was removed (ANet/Nexus ban broadcasting
+    // internal data). Public build: manual checklist + GW2 API only. The memory-scanning
+    // build (private 'memory-scan' branch) self-detects completion via an embedded hook.
 
     APIDefs->InputBinds_RegisterWithString(
         "KB_MAPCOMPLETION_TOGGLE",
@@ -124,7 +126,6 @@ void AddonLoad(AddonAPI_t* aApi)
 void AddonUnload()
 {
     APIDefs->Events_Unsubscribe("EV_MUMBLE_IDENTITY_UPDATED",   OnMumbleIdentityUpdated);
-    APIDefs->Events_Unsubscribe("EV_REWARD:MapCompletion",       OnRewardMapCompletion);
     APIDefs->GUI_Deregister(OnRender);
     APIDefs->GUI_Deregister(OnRenderOptions);
     APIDefs->InputBinds_Deregister("KB_MAPCOMPLETION_TOGGLE");
