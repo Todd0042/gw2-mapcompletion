@@ -257,6 +257,38 @@ void OnRewardMapCompletion(void* aEventArgs)
 }
 
 // ---------------------------------------------------------------------------
+//  Category-change disclaimer (INTERIM PUBLIC BUILD ONLY)
+//  Nexus requires notice before an addon changes category. On SWITCH_DATE this
+//  addon moves to the "memory reading" category (auto-detects map completion by
+//  reading game memory). Shown once per session until acknowledged. Remove this
+//  block when the memory-scanning build is merged public on/after SWITCH_DATE.
+// ---------------------------------------------------------------------------
+static const char* SWITCH_DATE = "2026-07-07";
+static void RenderCategoryDisclaimer()
+{
+    static bool s_ack = false;
+    if (s_ack) return;
+    ImGui::SetNextWindowSize(ImVec2(470.0f, 0.0f), ImGuiCond_Appearing);
+    if (ImGui::Begin("Map Completion Tracker \xE2\x80\x94 Important Notice", nullptr,
+                     ImGuiWindowFlags_NoCollapse))
+    {
+        ImGui::TextWrapped(
+            "On %s, Map Completion Tracker will change to the \"memory reading\" addon "
+            "category: it will read map-completion status directly from the game's memory "
+            "to auto-detect completion.\n\n"
+            "This build does NOT read game memory \xE2\x80\x94 it uses the manual checklist and "
+            "the official Guild Wars 2 API only.\n\n"
+            "If you are not comfortable with an addon reading game memory, please uninstall "
+            "Map Completion Tracker before %s.",
+            SWITCH_DATE, SWITCH_DATE);
+        ImGui::Spacing();
+        if (ImGui::Button("I understand"))
+            s_ack = true;
+    }
+    ImGui::End();
+}
+
+// ---------------------------------------------------------------------------
 //  OnRender
 // ---------------------------------------------------------------------------
 void OnRender()
@@ -283,6 +315,9 @@ void OnRender()
 
         APIDefs->Log(LOGL_INFO, "MapCompletionTracker", "Initialised successfully.");
     }
+
+    // Interim category-change notice (public build only).
+    RenderCategoryDisclaimer();
 
     // Always render the auto-detected completion popup, even when the main
     // window is closed — it's a standalone bottom-right confirmation.
