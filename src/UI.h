@@ -437,14 +437,6 @@ public:
                 && applyTo != "__unknown__" && m_tracker)
             {
                 m_tracker->MarkIncompleteFor(applyTo, mapId);
-                if (APIDefs)
-                {
-                    char buf[200];
-                    snprintf(buf, sizeof(buf),
-                             "Reverted auto-mark: map='%s' (id=%u) character='%s'",
-                             mapName.c_str(), mapId, applyTo.c_str());
-                    APIDefs->Log(LOGL_INFO, "MapCompletionTracker", buf);
-                }
             }
             std::lock_guard<std::mutex> lk(g_pendingMapCompMtx);
             g_pendingMapComp = {};

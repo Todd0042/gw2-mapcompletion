@@ -75,7 +75,6 @@ void AddonLoad(AddonAPI_t* aApi)
 {
     APIDefs = aApi;
     g_api   = aApi;
-    APIDefs->Log(LOGL_INFO, "MapCompletionTracker", "AddonLoad: start");
 
     (void)GetAllMaps();
     (void)GetMapsById();
@@ -116,8 +115,6 @@ void AddonLoad(AddonAPI_t* aApi)
         "KB_MAPCOMPLETION_TOGGLE",  // keybind to invoke on click
         "Map Completion Tracker"    // tooltip text
     );
-
-    APIDefs->Log(LOGL_INFO, "MapCompletionTracker", "AddonLoad: complete");
 }
 
 // ---------------------------------------------------------------------------
@@ -157,16 +154,8 @@ void OnMumbleIdentityUpdated(void* aEventArgs)
     // anything containing ':' or '\'.
     if (name.find(':') != std::string::npos || name.find('\\') != std::string::npos)
     {
-        APIDefs->Log(LOGL_DEBUG, "MapCompletionTracker",
-                     "Ignoring non-character MumbleLink name (file path).");
         return;
     }
-
-    char logBuf[128];
-    snprintf(logBuf, sizeof(logBuf),
-             "MumbleIdentityUpdated: name='%s' mapId=%u profession=%u",
-             name.c_str(), identity->MapID, identity->Profession);
-    APIDefs->Log(LOGL_DEBUG, "MapCompletionTracker", logBuf);
 
     strncpy(g_currentCharName, name.c_str(), sizeof(g_currentCharName) - 1);
     g_currentCharName[sizeof(g_currentCharName) - 1] = '\0';
@@ -177,11 +166,6 @@ void OnMumbleIdentityUpdated(void* aEventArgs)
         s_tracker.SetActiveCharacter(name);
         s_tracker.RegisterCharacter(name);
     }
-
-    char infoLog[128];
-    snprintf(infoLog, sizeof(infoLog),
-             "MapCompletionTracker: active character -> '%s'.", name.c_str());
-    APIDefs->Log(LOGL_INFO, "MapCompletionTracker", infoLog);
 }
 
 // ---------------------------------------------------------------------------
@@ -213,13 +197,11 @@ void OnRewardMapCompletion(void* aEventArgs)
 
     uint32_t mapId = p->MapId;
     if (mapId == 0) {
-        if (APIDefs) APIDefs->Log(LOGL_WARNING, "MapCompletionTracker",
-            "OnRewardMapCompletion: payload MapId is 0");
         return;
     }
 
-    // Resolve map id → MapInfo for the toast text. Unknown id is logged but
-    // we still mark complete (the tracker doesn't require a known name).
+    // Resolve map id → MapInfo for the toast text. Unknown id still marks
+    // complete (the tracker doesn't require a known name).
     const auto& byId = GetMapsById();
     auto it = byId.find(mapId);
     std::string mapName;
@@ -227,12 +209,6 @@ void OnRewardMapCompletion(void* aEventArgs)
         mapName = it->second->name;
     } else {
         mapName = "(unknown map)";
-        if (APIDefs) {
-            char buf[128];
-            snprintf(buf, sizeof(buf),
-                     "OnRewardMapCompletion: unknown map id %u", mapId);
-            APIDefs->Log(LOGL_WARNING, "MapCompletionTracker", buf);
-        }
     }
 
     std::string charNow = g_currentCharName;
@@ -245,14 +221,6 @@ void OnRewardMapCompletion(void* aEventArgs)
         g_pendingMapComp.character      = charNow;
         g_pendingMapComp.firedAt        = GetTickCount();
         g_pendingMapComp.markedComplete = false;
-    }
-
-    if (APIDefs) {
-        char buf[256];
-        snprintf(buf, sizeof(buf),
-                 "Auto-detected map completion: map='%s' (id=%u) character='%s'",
-                 mapName.c_str(), mapId, charNow.c_str());
-        APIDefs->Log(LOGL_INFO, "MapCompletionTracker", buf);
     }
 }
 
@@ -326,8 +294,6 @@ void OnRender()
         // If we already have a character name from an earlier event, apply it
         if (g_currentCharName[0] != '\0')
             s_tracker.SetActiveCharacter(g_currentCharName);
-
-        APIDefs->Log(LOGL_INFO, "MapCompletionTracker", "Initialised successfully.");
     }
 
     // Interim category-change notice (public build only).
