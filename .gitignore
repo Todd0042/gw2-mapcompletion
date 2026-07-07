@@ -1,23 +1,17 @@
-# Build artifacts
-build/
+# Only the release DLL is tracked; ignore any other .dll
 *.dll
-*.dll.a
-*.exe
-*.o
-*.a
+!MapCompletionTracker.dll
 
-# CMake generated files
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
+# User runtime data
+completion.json
 
-# Ninja
-.ninja_deps
-.ninja_log
-build.ninja
+# Local notes (not tracked)
+TODO.md
+description.txt
 
-# Local toolchain
-toolchain-mingw.cmake
+# OS
+.DS_Store
+Thumbs.db
 
 # IDE
 .vs/
@@ -28,40 +22,3 @@ toolchain-mingw.cmake
 
 # AI/Assistant
 .claude/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Block accidental re-introduction of memory-scanning research or
-# debug-tool artifacts. None of these are part of the addon; they were
-# stripped from this repo and must never be re-added here.
-scanner/
-src/MemScanner.*
-**/memtools.h
-*.heap
-heap_dumps/
-heapsnaps/
-fastscan_snaps/
-precise_snaps/
-memscan*.log
-debug_mapinfo.txt
-log_before_*.txt
-log_after_*.txt
-Lessons_Learned
-Lessons_Learned.*
-src/EventDebug.cpp
-src/GW2API.h
-src/MapCompletionAPI.h
-
-# Per-user runtime data (created by the addon at runtime; should never
-# be tracked because it contains user-specific completion state and
-# potentially API keys from older versions).
-completion.json
-
-# Local maintainer notes (continuity-of-development; not tracked).
-TODO.md
-description.txt
-
-# private memory-scan build artifacts — never publish
-dist/
