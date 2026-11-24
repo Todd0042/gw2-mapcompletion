@@ -9,7 +9,7 @@
 # 🗺️ GW2 Map Completion Tracker
 
 [![Version](https://img.shields.io/badge/Version-1.5.2-ff2a85.svg)](https://github.com/Todd0042/gw2-mapcompletion/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-00f0ff.svg)](LICENSE)
+[![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/License-PolyForm%20Noncommercial%201.0.0-00f0ff.svg)](LICENSE)
 [![Platform: Windows x86--64](https://img.shields.io/badge/Platform-Windows%20x86--64-orange.svg)](MapCompletionTracker.dll)
 [![Host: Raidcore Nexus](https://img.shields.io/badge/Addon-Raidcore%20Nexus-39ff14.svg)](https://raidcore.gg/gw2/nexus)
 [![UI: Dear ImGui](https://img.shields.io/badge/UI-Dear%20ImGui-teal.svg)]()
@@ -219,7 +219,7 @@ The expansion tiles (`##exptile`), region headers, and map names compiled into [
 gw2-mapcompletion/
 ├── MapCompletionTracker.dll   # Prebuilt Windows x86-64 Nexus addon DLL (v1.5.2)
 ├── README.md                  # User guide & technical reference
-├── LICENSE                    # MIT License (Copyright (c) 2026 Todd0042)
+├── LICENSE                    # PolyForm Noncommercial License 1.0.0 (Copyright (c) 2026 Todd0042)
 ├── .gitignore                 # Tracks only MapCompletionTracker.dll; ignores completion.json & local notes
 └── .gitattributes             # Automatic text/LF line-ending normalization
 ```
@@ -250,7 +250,7 @@ sha256sum MapCompletionTracker.dll
 ## 7. License, AI Notice & Support ([LICENSE](LICENSE))
 
 ### 📄 License
-This project is distributed under the **[MIT License](LICENSE)** — Copyright (c) 2026 Todd0042.
+This project is distributed under the [PolyForm Noncommercial License 1.0.0](LICENSE) — free for personal, hobby, educational, research and nonprofit use; commercial use (inside a company, in a paid product or service, or for profit) requires a separate license from [Todd0042](https://github.com/Todd0042). Copyright (c) 2026 Todd0042.
 
 ### 🤖 AI Notice
 This addon includes AI-generated content and/or AI-assisted code. AI may have been used during development for tasks such as code generation, suggestions, documentation, or content creation. While efforts are made to review and validate all AI-generated output, it may not always be fully accurate, optimal, or free of unintended behavior. The developer remains responsible for ensuring compliance with the game's Terms of Service.
